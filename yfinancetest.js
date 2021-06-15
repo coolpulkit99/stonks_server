@@ -1,5 +1,4 @@
 var yahooFinance = require('yahoo-finance');
-
 const date = require('date-and-time');
 
 let data_month_ago = 4;
@@ -8,7 +7,7 @@ const now = new Date();
 const reqd_date = date.addMonths(now, -1 * data_month_ago);
 var formatted = date.format(reqd_date, 'YYYY-MM-DD');
 
-console.log(reqd_date)
+// console.log(reqd_date)
 // console.log(formatter);
 
 

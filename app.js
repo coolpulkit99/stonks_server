@@ -57,7 +57,10 @@ app.get("/filter/:count", (req, res) => {
 
     const callbackFunc = (results) => {
         for (const stock_ticker of tickers) {
-            let satisfiesFilter = calculations.satisfyFilter(results[stock_ticker]);
+            let newobj={}
+            let satisfiesFilter = calculations.satisfyFilter(results[stock_ticker].reverse());
+            // newobj[stock_ticker]=satisfiesFilter;
+            // console.log(newobj);
             if (satisfiesFilter) {
                 filteredTickers.push(stock_ticker);
             }
@@ -88,6 +91,39 @@ app.get("/ticker/:ticker", (req, res) => {
             res.send(response);
         });
 
+})
+
+app.get("/tickerold/:ticker", (req, res) => {
+
+    yfinancetest.getTickerData([req.params.ticker],
+        (data) => {
+            var response = {
+                quotes: data[req.params.ticker].reverse()
+            }
+
+            res.set({
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+            });
+            res.send(response);
+        })
+
+})
+
+app.get("/satisfyfilter/:ticker",(req,res)=>{
+    stockdata.getTickerData(req.params.ticker)
+    .then(data => {
+        // console.log(data)
+        var response = {
+            boolean: calculations.satisfyFilter(data.data)
+        }
+
+        res.set({
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+        });
+        res.send(response);
+    });
 })
 
 

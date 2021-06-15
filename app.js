@@ -2,6 +2,7 @@ var app = require('express')();
 var utility = require("./utility");
 var calculations = require("./calculations");
 var stockdata = require("./stockdata");
+const yfinancetest = require('./yfinancetest');
 
 // var cors=require('cors');
 
@@ -44,6 +45,31 @@ app.get("/filtered", (req, res) => {
         });
         res.send(response);
     })
+
+})
+
+
+
+app.get("/filter/:count", (req, res) => {
+    var tickers = utility.getTickers(req.params.count);
+    var filteredTickers = new Array();
+    // console.log(results);
+
+    const callbackFunc = (results) => {
+        for (const stock_ticker of tickers) {
+            let satisfiesFilter = calculations.satisfyFilter(results[stock_ticker]);
+            if (satisfiesFilter) {
+                filteredTickers.push(stock_ticker);
+            }
+        }
+        var response = { tickers: filteredTickers };
+        res.set({
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+        });
+        res.send(response);
+    }
+    var results = yfinancetest.getTickerData(tickers, callbackFunc);
 
 })
 

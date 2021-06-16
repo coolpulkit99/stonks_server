@@ -1,4 +1,3 @@
-//imports
 const date = require('date-and-time');
 const yahooFinance = require('yahoo-finance2').default;
 
@@ -15,7 +14,7 @@ module.exports = {
             const query = ticker;
             const queryOptions = { period1: reqd_date, interval: "1d" };
             const result = await yahooFinance.historical(query, queryOptions);
-            
+
             var response = { ticker: ticker, data: result };
             return response;
         }

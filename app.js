@@ -6,6 +6,9 @@ const yfinancetest = require('./yfinancetest');
 
 require("dotenv").config();
 
+app.get("/",(req,res)=>{
+    res.send("up");    
+})
 
 app.get("/nifty/:count", (req, res) => {
 
